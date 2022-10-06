@@ -37,3 +37,7 @@ next-env.d.ts
 
 # ide
 .idea
+
+# envs
+.env
+/grafbase/.env

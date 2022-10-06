@@ -1,9 +1,5 @@
-import { useRouter } from 'next/router'
-
 const ItemCreatePage = () => {
-  const { query } = useRouter()
+  return <div>Create</div>;
+};
 
-  return <div>{query}</div>
-}
-
-export default ItemIdPage
+export default ItemCreatePage;

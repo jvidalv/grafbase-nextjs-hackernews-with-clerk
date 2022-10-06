@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+    font-family: monospace;
+}
+
+a:hover {
+    text-decoration: underline
+}

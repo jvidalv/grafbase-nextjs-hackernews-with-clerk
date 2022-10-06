@@ -1,9 +1,5 @@
-import { useRouter } from 'next/router'
-
 const UserIdPage = () => {
-  const { query } = useRouter()
+  return <div>user</div>;
+};
 
-  return <div>{query}</div>
-}
-
-export default UserIdPage
+export default UserIdPage;

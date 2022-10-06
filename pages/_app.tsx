@@ -4,17 +4,20 @@ import {
   SignedIn,
   SignedOut,
   RedirectToSignIn,
-  ClerkLoading
-} from '@clerk/nextjs'
-import type { AppProps } from 'next/app'
-import ApolloProviderWrapper from 'pages/components/apollo-provider'
-import Layout from 'pages/components/layout'
+  ClerkLoading,
+} from "@clerk/nextjs";
+import type { AppProps } from "next/app";
+import ApolloProviderWrapper from "pages/components/apollo-provider";
+import Layout from "pages/components/layout";
+import "/styles/globals.css";
+import Head from "pages/components/head";
 
-const privatePages = ['/user']
+const privatePages = ["/user"];
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   return (
     <ClerkProvider {...pageProps}>
+      <Head />
       <ClerkLoaded>
         <ApolloProviderWrapper>
           <Layout>
@@ -35,7 +38,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
       </ClerkLoaded>
       <ClerkLoading>Loading</ClerkLoading>
     </ClerkProvider>
-  )
+  );
 }
 
-export default MyApp
+export default MyApp;
