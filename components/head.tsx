@@ -1,5 +1,5 @@
-import { PropsWithChildren } from "react";
 import NextHead from "next/head";
+import { PropsWithChildren } from "react";
 
 const Head = ({ children }: PropsWithChildren) => {
   return (
@@ -9,7 +9,7 @@ const Head = ({ children }: PropsWithChildren) => {
         name="description"
         content="Nextjs Hacker News example with Clerk and Apollo"
       />
-      <link rel="icon" href="/favicon.ico" />
+      <link rel="icon" href="/public/favicon.ico" />
       {children}
     </NextHead>
   );

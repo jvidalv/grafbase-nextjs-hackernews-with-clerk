@@ -14,3 +14,23 @@ This examples shows how to connect Clerk as your Identity Provider with your Gra
 8. Run `npx grafbase dev` to start local dev server with your schema
 9. Run `npm run dev`, or `yarn dev` (in a new terminal)
 10. Visit [http://localhost:3000](http://localhost:3000)
+
+
+## Issues
+
+### Viewer
+
+#### Storing users manually
+
+There is no way to hook Clerk and your Grafbase backend to automatically insert users on sign up, so you must hack it, and
+create them manually on the login callback from clerk
+
+#### Query your user
+
+There is no way to query or store the user by certain prop, example, clerkId or username, or email, so I have to query
+all the users and find the one that matches (email or username) client-side.
+
+#### No createdAt/updatedAt
+
+I have to manually store the ms in which the user was created.
+

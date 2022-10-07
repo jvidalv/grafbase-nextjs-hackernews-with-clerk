@@ -1,17 +1,35 @@
+import { useSignUp } from "@clerk/nextjs";
+import { withServerSideAuth } from "@clerk/nextjs/ssr";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 const LoginPage = () => {
+  const { query } = useRouter();
+  const { signUp } = useSignUp();
+
+  const onGithubClick = () => {
+    return signUp?.authenticateWithRedirect({
+      strategy: "oauth_github",
+      redirectUrl: `/callback?origin=${query?.origin}`,
+      redirectUrlComplete: `/callback?origin=${query?.origin}`,
+    });
+  };
+
   return (
-    <div>
+    <div className="min-h-screen flex flex-col items-center justify-center -mt-16">
       <Head>
         <title>Login | Grafnews</title>
       </Head>
-      <div className="border border-black max-w-lg mx-auto border-b-4">
+      <div className="border border-gray-600 max-w-lg mx-auto border-b-4">
         <div className="px-6 py-8 bg-gray-200">
           <h1 className="text-4xl font-bold text-center">Join Grafnews</h1>
         </div>
         <div className="px-6 pb-8">
-          <button className="flex items-center justify-center space-x-4 border-black border px-4 w-full py-3 mt-6 text-2xl  bg-black text-white hover:bg-indigo-800">
+          <button
+            onClick={onGithubClick}
+            className="flex items-center justify-center space-x-4 border-black border px-4 w-full py-3 mt-6 text-2xl  bg-black text-white hover:bg-indigo-800"
+          >
             <svg fill="currentColor" viewBox="0 0 24 24" className="w-8 h-8">
               <path
                 fillRule="evenodd"
@@ -38,5 +56,24 @@ const LoginPage = () => {
     </div>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = withServerSideAuth(
+  async (context) => {
+    const userId = context.req.auth.userId;
+
+    if (userId) {
+      return {
+        redirect: {
+          permanent: true,
+          destination: `/user/${userId}`,
+        },
+      };
+    }
+
+    return {
+      props: {},
+    };
+  }
+);
 
 export default LoginPage;

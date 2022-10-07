@@ -3,7 +3,7 @@ schema
     providers: [{ type: oidc, issuer: "{{ env.CLERK_ISSUER_URL }}" }]
     rules: [
       { allow: private, operations: ["read"] }
-      { allow: groups, groups: ["admin"], operations: ["delete"] }
+      { allow: groups, groups: ["admin"] }
     ]
   ) {
   query: Query
@@ -14,28 +14,31 @@ type User @model {
   name: String!
   email: Email! @unique
   imageUrl: String
-  posts: [Post]
+  items: [Item]
   comments: [Comment]
+  createdAt : Int!
 }
 
-type Post @model {
+type Item @model {
   id: ID!
   author: User!
   title: String!
   url: URL!
   votes: [Vote]
   comments: [Comment]
+  createdAt : Int!
 }
 
 type Comment @model {
   id: ID!
   author: User!
-  post: User!
+  item: Item!
   content: String!
-  votes: [Vote]
+  createdAt : Int!
 }
 
 type Vote @model {
   id: ID!
   user: User!
+  positive: Boolean!
 }

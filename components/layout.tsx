@@ -1,3 +1,5 @@
+import { useAuth, useSession } from "@clerk/nextjs";
+import LogoAnimated from "components/logo-animated";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { PropsWithChildren, SVGProps } from "react";
@@ -5,6 +7,7 @@ import { PropsWithChildren, SVGProps } from "react";
 const navigation = [
   { name: "Feed", href: "/" },
   { name: "Users", href: "/users" },
+  { name: "Submit", href: "/item/submit" },
   { name: "About", href: "/about" },
 ];
 
@@ -49,6 +52,9 @@ const footer = [
 
 const Layout = ({ children }: PropsWithChildren) => {
   const { asPath } = useRouter();
+  const { isLoaded, isSignedIn, userId } = useAuth();
+  const { session } = useSession();
+
   return (
     <div>
       <header className="bg-black">
@@ -60,20 +66,7 @@ const Layout = ({ children }: PropsWithChildren) => {
             <div className="flex items-center">
               <Link href="/" passHref>
                 <a className="flex items-center space-x-3">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6 text-white"
-                  >
-                    <path
-                      d="m1 12 11 5.5L23 12M1 17.5 12 23l11-5.5M12 1 1 6.5 12 12l11-5.5L17.5 4 12 6.5"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    ></path>
-                  </svg>
+                  <LogoAnimated className="text-white w-6 h-6" />
                   <span className="text-white font-semibold text-xl">
                     Grafnews
                   </span>
@@ -94,13 +87,26 @@ const Layout = ({ children }: PropsWithChildren) => {
                 ))}
               </div>
             </div>
-            <div className="ml-10 space-x-4">
-              <Link href="/login" passHref>
-                <a className="inline-block rounded border border-transparent text-base font-bold text-white hover:bg-opacity-75">
-                  Join
-                </a>
-              </Link>
-            </div>
+            {isSignedIn ? (
+              <div className="ml-10 space-x-4">
+                <Link
+                  href={{ pathname: "/user/[id]", query: { id: userId } }}
+                  passHref
+                >
+                  <a className="inline-block rounded border border-transparent text-base font-bold text-white hover:bg-opacity-75">
+                    {session?.user?.username}
+                  </a>
+                </Link>
+              </div>
+            ) : (
+              <div className="ml-10 space-x-4">
+                <Link href="/login" passHref>
+                  <a className="inline-block rounded border border-transparent text-base font-bold text-white hover:bg-opacity-75">
+                    {isLoaded ? "Join" : "..."}
+                  </a>
+                </Link>
+              </div>
+            )}
           </div>
           <div className="flex flex-wrap justify-center space-x-6 py-4 lg:hidden">
             {navigation.map(({ href, name }) => (
@@ -123,7 +129,7 @@ const Layout = ({ children }: PropsWithChildren) => {
               <a
                 key={item.name}
                 href={item.href}
-                className="text-gray-400 hover:text-gray-500"
+                className="text-gray-500 hover:text-gray-500"
               >
                 <span className="sr-only">{item.name}</span>
                 <item.icon className="h-6 w-6" aria-hidden="true" />
@@ -131,7 +137,7 @@ const Layout = ({ children }: PropsWithChildren) => {
             ))}
           </div>
           <div className="mt-8 md:order-1 md:mt-0">
-            <p className="text-center text-base text-gray-400">
+            <p className="text-center text-base text-gray-700">
               &copy; Grafbase, Inc. All rights reserved.
             </p>
           </div>

@@ -1,5 +1,3 @@
-import type { PropsWithChildren } from "react";
-import { useMemo } from "react";
 import {
   ApolloClient,
   ApolloProvider,
@@ -9,9 +7,11 @@ import {
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { useAuth } from "@clerk/nextjs";
+import type { PropsWithChildren } from "react";
+import { useMemo } from "react";
 
 const httpLink = new HttpLink({
-  uri: "YOUR_GRAFBASE_API_URL",
+  uri: process.env.NEXT_PUBLIC_GRAFBASE_API_URL,
 });
 
 const ApolloProviderWrapper = ({ children }: PropsWithChildren) => {

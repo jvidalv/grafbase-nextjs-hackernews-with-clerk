@@ -81,16 +81,16 @@ const AboutPage = () => {
               {title[0]}
             </div>
             <h3 className="mt-8 text-2xl text-center">{title}</h3>
-            <p className="mt-3 text-center">{description}</p>
+            <p className="mt-3 text-center text-gray-600">{description}</p>
           </a>
         ))}
       </div>
       <h3 className="mt-12 text-2xl font-semibold">Technology used</h3>
       <div className="grid grid-cols-3 mt-8 gap-8">
         {tecnologyUsed.map(({ title, description }) => (
-          <div key={title} className="bg-gray-100 justify-center p-4 group">
+          <div key={title} className="bg-gray-50 justify-center p-4 group">
             <h3 className="text-xl">{title}</h3>
-            <p className="mt-3">{description}</p>
+            <p className="mt-3 text-gray-600">{description}</p>
           </div>
         ))}
       </div>

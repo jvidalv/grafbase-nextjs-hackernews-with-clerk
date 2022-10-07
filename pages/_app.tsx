@@ -1,18 +1,27 @@
+import "/styles/globals.css";
 import {
   ClerkLoaded,
   ClerkProvider,
   SignedIn,
   SignedOut,
-  RedirectToSignIn,
   ClerkLoading,
 } from "@clerk/nextjs";
+import ApolloProviderWrapper from "components/apollo-provider";
+import Head from "components/head";
+import Layout from "components/layout";
+import LogoAnimated from "components/logo-animated";
+import Redirect from "components/redirect";
 import type { AppProps } from "next/app";
-import ApolloProviderWrapper from "pages/components/apollo-provider";
-import Layout from "pages/components/layout";
-import "/styles/globals.css";
-import Head from "pages/components/head";
 
-const privatePages = ["/user"];
+const privatePages = ["/user/[id]"];
+
+const placeholder = (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="border border-black pt-6 pb-4 px-6 bg-gray-50 border-b-4 -mt-16">
+      <LogoAnimated />
+    </div>
+  </div>
+);
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   return (
@@ -27,7 +36,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
                   <Component {...pageProps} />
                 </SignedIn>
                 <SignedOut>
-                  <RedirectToSignIn />
+                  <Redirect> {placeholder}</Redirect>
                 </SignedOut>
               </>
             ) : (
@@ -36,7 +45,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
           </Layout>
         </ApolloProviderWrapper>
       </ClerkLoaded>
-      <ClerkLoading>Loading</ClerkLoading>
+      <ClerkLoading>{placeholder}</ClerkLoading>
     </ClerkProvider>
   );
 }
