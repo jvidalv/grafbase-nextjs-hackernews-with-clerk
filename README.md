@@ -16,9 +16,11 @@ This examples shows how to connect Clerk as your Identity Provider with your Gra
 10. Visit [http://localhost:3000](http://localhost:3000)
 
 ## Missing
+-[ ] Explanation steps and how it works.
 -[ ] Pagination of items, users and posts.
 -[ ] Better typing by using fragments and remove the NonNullable thing.
 -[ ] Uncomment delete (It brokes the app, as it also deletes the linked users).
+-[ ] About page.
 
 ## Issues
 
