@@ -8,14 +8,9 @@ import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 
 const ITEM_SUBMIT_MUTATION = gql`
-  mutation Item($title: String!, $url: URL!, $createdAt: Int!, $authorId: ID!) {
+  mutation Item($title: String!, $url: URL!, $authorId: ID!) {
     itemCreate(
-      input: {
-        title: $title
-        url: $url
-        createdAt: $createdAt
-        author: { link: $authorId }
-      }
+      input: { title: $title, url: $url, author: { link: $authorId } }
     ) {
       item {
         id
@@ -47,7 +42,6 @@ const ItemSubmitPage = () => {
       variables: {
         title: form.title,
         url: form.url,
-        createdAt: Date.now(),
         authorId: viewer?.id,
       },
     });

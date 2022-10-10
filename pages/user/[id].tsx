@@ -31,7 +31,9 @@ const UserIdPage = () => {
         {viewer?.email} | Joined{" "}
         <time>
           {!!viewer?.createdAt &&
-            formatDistanceToNow(viewer?.createdAt, { addSuffix: true })}
+            formatDistanceToNow(Date.parse(viewer?.createdAt), {
+              addSuffix: true,
+            })}
         </time>
       </p>
       <p className="text-xl mt-4 text-gray-600"></p>

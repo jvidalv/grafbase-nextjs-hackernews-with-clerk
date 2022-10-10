@@ -4,16 +4,10 @@ import useViewer from "hooks/use-viewer";
 import { FormEvent, useState } from "react";
 
 const ITEM_ADD_COMMENT_MUTATION = gql`
-  mutation CommentAdd(
-    $content: String!
-    $authorId: ID!
-    $itemId: ID!
-    $createdAt: Int!
-  ) {
+  mutation CommentAdd($content: String!, $authorId: ID!, $itemId: ID!) {
     commentCreate(
       input: {
         content: $content
-        createdAt: $createdAt
         author: { link: $authorId }
         item: { link: $itemId }
       }
@@ -45,7 +39,6 @@ const ItemAddComment = ({ itemId }: { itemId: string }) => {
       variables: {
         content,
         authorId: viewer?.id,
-        createdAt: Date.now(),
         itemId,
       },
     });

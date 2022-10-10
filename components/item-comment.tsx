@@ -66,7 +66,7 @@ const ItemComment = (
             </div>
           )}
           <time className="text-gray-600 text-sm">
-            {formatDistanceToNow(createdAt, { addSuffix: true })}
+            {formatDistanceToNow(Date.parse(createdAt), { addSuffix: true })}
           </time>
         </div>
       </div>

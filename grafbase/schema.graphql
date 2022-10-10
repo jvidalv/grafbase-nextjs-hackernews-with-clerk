@@ -15,7 +15,7 @@ type User @model {
   imageUrl: String
   items: [Item]
   comments: [Comment]
-  createdAt : Int!
+  createdAt : String
 }
 
 type Item @model {
@@ -25,7 +25,7 @@ type Item @model {
   url: URL!
   votes: [Vote]
   comments: [Comment]
-  createdAt : Int!
+  createdAt : String
 }
 
 type Comment @model {
@@ -33,7 +33,7 @@ type Comment @model {
   author: User!
   item: Item!
   content: String!
-  createdAt : Int!
+  createdAt : String
 }
 
 type Vote @model {

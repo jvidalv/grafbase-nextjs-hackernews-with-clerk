@@ -14,20 +14,8 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 const USER_CREATE_MUTATION = gql`
-  mutation UserCreateLogin(
-    $name: String!
-    $email: Email!
-    $createdAt: Int!
-    $imageUrl: String!
-  ) {
-    userCreate(
-      input: {
-        name: $name
-        email: $email
-        createdAt: $createdAt
-        imageUrl: $imageUrl
-      }
-    ) {
+  mutation UserCreateLogin($name: String!, $email: Email!, $imageUrl: String!) {
+    userCreate(input: { name: $name, email: $email, imageUrl: $imageUrl }) {
       __typename
     }
   }
@@ -46,7 +34,7 @@ const CallbackLoginPage = () => {
   const client = useApolloClient();
   const { isSignedIn } = useAuth();
   const { session } = useSession();
-  const { query, replace, isReady } = useRouter();
+  const { replace } = useRouter();
   const { viewer, loading: loadingViewer } = useViewer();
   const [mutateUserCreate] =
     useMutation<UserCreateLoginMutation>(USER_CREATE_MUTATION);
@@ -75,7 +63,6 @@ const CallbackLoginPage = () => {
               name: session?.user?.username,
               email: email,
               imageUrl: session?.user?.profileImageUrl,
-              createdAt: Date.now(),
             },
           });
         }
