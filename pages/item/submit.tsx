@@ -1,6 +1,6 @@
 import { gql, useMutation } from "@apollo/client";
 import { withServerSideAuth } from "@clerk/nextjs/ssr";
-import { ItemMutation, UserMutation } from "gql/graphql";
+import { ItemMutation } from "gql/graphql";
 import useViewer from "hooks/use-viewer";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
