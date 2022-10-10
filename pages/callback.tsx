@@ -1,67 +1,12 @@
-import { gql, useMutation } from "@apollo/client";
-import {
-  AuthenticateWithRedirectCallback,
-  useAuth,
-  useSession,
-} from "@clerk/nextjs";
+import { AuthenticateWithRedirectCallback } from "@clerk/nextjs";
+import { withServerSideAuth } from "@clerk/nextjs/ssr";
 import LogoAnimated from "components/logo-animated";
-import { UserMutation } from "gql/graphql";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 
-const USER_CREATE_MUTATION = gql`
-  mutation User(
-    $name: String!
-    $email: Email!
-    $createdAt: Int!
-    $imageUrl: String!
-  ) {
-    userCreate(
-      input: {
-        name: $name
-        email: $email
-        createdAt: $createdAt
-        imageUrl: $imageUrl
-      }
-    ) {
-      __typename
-    }
-  }
-`;
-
+// This screen has another callback to callback-login because me must insert or update the user in order
+// for the viewer to work
 const CallbackPage = () => {
-  const { isSignedIn } = useAuth();
-  const { session } = useSession();
-  const { query, replace, isReady } = useRouter();
-  const [mutateFunction, { data, loading, error }] =
-    useMutation<UserMutation>(USER_CREATE_MUTATION);
-
-  useEffect(() => {
-    if (isSignedIn) {
-      mutateFunction({
-        variables: {
-          name: session?.user?.username,
-          email: session?.user?.emailAddresses[0]?.emailAddress,
-          imageUrl: session?.user?.profileImageUrl,
-          createdAt: Date.now(),
-        },
-      });
-    }
-  }, [
-    isSignedIn,
-    mutateFunction,
-    session?.user?.emailAddresses,
-    session?.user?.username,
-  ]);
-
-  useEffect(() => {
-    if ((isSignedIn && isReady && !loading && data) || !!error) {
-      const url = query?.origin ? (query?.origin as string) : "/";
-      replace(url);
-    }
-  }, [data, error, isReady, isSignedIn, loading, query?.origin, replace]);
-
   return (
     <>
       <Head>
@@ -71,12 +16,29 @@ const CallbackPage = () => {
         <div className="border border-black pt-6 pb-4 px-6 bg-gray-50 border-b-4">
           <LogoAnimated />
         </div>
-        {!isSignedIn && (
-          <AuthenticateWithRedirectCallback redirectUrl="/callback" />
-        )}
+        <AuthenticateWithRedirectCallback redirectUrl="/callback-login" />
       </div>
     </>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = withServerSideAuth(
+  async (context) => {
+    const userId = context.req.auth.userId;
+
+    if (userId) {
+      return {
+        redirect: {
+          permanent: true,
+          destination: `/`,
+        },
+      };
+    }
+
+    return {
+      props: {},
+    };
+  }
+);
 
 export default CallbackPage;

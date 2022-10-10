@@ -1,5 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
-import { useSession } from "@clerk/nextjs";
+import { useAuth, useSession } from "@clerk/nextjs";
 import { ViewerQuery } from "gql/graphql";
 import { useMemo } from "react";
 
@@ -13,6 +13,37 @@ const VIEWER_QUERY = gql`
           email
           imageUrl
           createdAt
+          items(first: 3) {
+            edges {
+              node {
+                id
+                title
+                comments(first: 100) {
+                  edges {
+                    __typename
+                  }
+                }
+                votes(first: 100) {
+                  edges {
+                    node {
+                      id
+                      positive
+                      user {
+                        id
+                      }
+                    }
+                  }
+                }
+                author {
+                  id
+                  name
+                  imageUrl
+                }
+                url
+                createdAt
+              }
+            }
+          }
         }
       }
     }
@@ -20,8 +51,11 @@ const VIEWER_QUERY = gql`
 `;
 
 const useViewer = () => {
+  const { isSignedIn } = useAuth();
   const { session } = useSession();
-  const { loading, error, data } = useQuery<ViewerQuery>(VIEWER_QUERY);
+  const { loading, data } = useQuery<ViewerQuery>(VIEWER_QUERY, {
+    skip: !isSignedIn,
+  });
 
   const viewer = useMemo(() => {
     return data?.userCollection?.edges?.find(

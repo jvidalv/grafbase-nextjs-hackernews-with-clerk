@@ -1,8 +1,12 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useApolloClient, useMutation, useQuery } from "@apollo/client";
 import { SignedIn } from "@clerk/nextjs";
+import Img from "components/img";
 import ItemAddComment from "components/item-add-comment";
+import ItemComment from "components/item-comment";
+import ItemVotes from "components/item-votes";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { ItemOneQuery } from "gql/graphql";
+import useViewer from "hooks/use-viewer";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
@@ -14,6 +18,7 @@ const ITEM_QUERY = gql`
       comments(first: 100) {
         edges {
           node {
+            id
             content
             createdAt
             author {
@@ -26,7 +31,13 @@ const ITEM_QUERY = gql`
       }
       votes(first: 100) {
         edges {
-          __typename
+          node {
+            id
+            positive
+            user {
+              id
+            }
+          }
         }
       }
       author {
@@ -40,17 +51,38 @@ const ITEM_QUERY = gql`
   }
 `;
 
+const ITEM_DELETE_MUTATION = gql`
+  mutation ItemOneDelete($id: ID!) {
+    itemDelete(id: $id) {
+      deletedId
+    }
+  }
+`;
+
 const ItemIdPage = () => {
-  const { query } = useRouter();
+  const client = useApolloClient();
+  const { query, replace } = useRouter();
+  const { viewer } = useViewer();
   const { data, loading, error } = useQuery<ItemOneQuery>(ITEM_QUERY, {
     variables: { id: query.id },
   });
+  const [deleteMutation] = useMutation(ITEM_DELETE_MUTATION);
 
   if (loading || error || !data?.item) {
-    return;
+    return null;
   }
 
   const { id, title, comments, createdAt, url, votes, author } = data?.item;
+
+  const isSessionUserItem = author.id === viewer?.id;
+
+  const onDelete = () => {
+    return alert("Not working yet");
+
+    if (confirm("Are you sure you want to delete this item?")) {
+      deleteMutation({ variables: { id } }).then(() => replace("/"));
+    }
+  };
 
   return (
     <div>
@@ -59,35 +91,7 @@ const ItemIdPage = () => {
       </Head>
       <div className="flex">
         <div className="flex flex-col border border-black">
-          <button className="flex flex-1 items-center justify-center p-2 hover:bg-indigo-800 hover:text-white">
-            <svg
-              viewBox="0 0 24 24"
-              className="w-6 h-6"
-              stroke="currentColor"
-              strokeWidth="2"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="m18 15-6-6-6 6"></path>
-            </svg>
-          </button>
-          <div className="flex flex-1 items-center justify-center p-2 bg-black text-white font-bold text-lg border-y border-black">
-            {votes?.edges?.length || 0}
-          </div>
-          <button className="flex flex-1 items-center justify-center p-2 hover:bg-indigo-800 hover:text-white">
-            <svg
-              viewBox="0 0 24 24"
-              className="w-6 h-6"
-              stroke="currentColor"
-              strokeWidth="2"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="m6 9 6 6 6-6"></path>
-            </svg>
-          </button>
+          <ItemVotes itemId={id} votes={votes} />
         </div>
         <div className="pl-4 flex-1">
           <h1 className="text-5xl font-bold">{title}</h1>
@@ -99,14 +103,21 @@ const ItemIdPage = () => {
             </div>
           </div>
           <div className="flex justify-end space-x-2 items-center mt-4">
-            <div className="h-7 w-7"></div>
-            <span className=" text-gray-500">
+            {isSessionUserItem && (
+              <button
+                onClick={onDelete}
+                className="text-gray-700 hover:bg-red-200 px-2 border"
+              >
+                Delete
+              </button>
+            )}
+            <span className="text-gray-500">
               <time className="font-semibold text-gray-700">
                 {formatDistanceToNow(createdAt, { addSuffix: true })}
               </time>{" "}
               by {author.name}
             </span>
-            <img src={author.imageUrl} alt={author.name} className="h-7 w-7" />
+            <Img src={author.imageUrl} alt={author.name} className="h-7 w-7" />
           </div>
         </div>
       </div>
@@ -127,25 +138,7 @@ const ItemIdPage = () => {
                 return null;
               }
 
-              const {
-                content,
-                createdAt,
-                author: { name, imageUrl },
-              } = edge.node;
-              return (
-                <div key={content} className="border w-full">
-                  <div className="flex justify-between items-center bg-gray-50 pr-4">
-                    <div className="flex items-center space-x-4">
-                      <img src={imageUrl} alt={name} className="h-10 w-10" />
-                      <span className="text-base ">{name}</span>
-                    </div>
-                    <time className=" text-gray-600 text-sm">
-                      {formatDistanceToNow(createdAt, { addSuffix: true })}
-                    </time>
-                  </div>
-                  <div className="p-4 text-gray-700">{content}</div>
-                </div>
-              );
+              return <ItemComment key={edge.node.id} {...edge.node} />;
             })}
           </div>
         </div>

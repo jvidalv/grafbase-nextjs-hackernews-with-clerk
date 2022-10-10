@@ -13,7 +13,7 @@ import LogoAnimated from "components/logo-animated";
 import Redirect from "components/redirect";
 import type { AppProps } from "next/app";
 
-const privatePages = ["/user/[id]"];
+const publicPages = ["/login", "/callback"];
 
 const placeholder = (
   <div className="flex items-center justify-center min-h-screen">
@@ -30,17 +30,17 @@ function MyApp({ Component, pageProps, router }: AppProps) {
       <ClerkLoaded>
         <ApolloProviderWrapper>
           <Layout>
-            {privatePages.includes(router.pathname) ? (
+            {publicPages.includes(router.pathname) ? (
+              <Component {...pageProps} />
+            ) : (
               <>
                 <SignedIn>
                   <Component {...pageProps} />
                 </SignedIn>
                 <SignedOut>
-                  <Redirect> {placeholder}</Redirect>
+                  <Redirect>{placeholder}</Redirect>
                 </SignedOut>
               </>
-            ) : (
-              <Component {...pageProps} />
             )}
           </Layout>
         </ApolloProviderWrapper>

@@ -19,7 +19,13 @@ const ITEMS_LIST_QUERY = gql`
           }
           votes(first: 100) {
             edges {
-              __typename
+              node {
+                id
+                positive
+                user {
+                  id
+                }
+              }
             }
           }
           author {
@@ -64,6 +70,13 @@ const Home: NextPage = () => {
             <div className="animate-pulse bg-gray-200 p-4 border border-gray-400 h-24 border-b-4 w-full" />
             <div className="animate-pulse bg-gray-200 p-4 border border-gray-400 h-24 border-b-4 w-full" />
           </>
+        )}
+        {!!error && (
+          <div className="bg-red-500 min-h-24 w-full flex flex-col space-y-6 items-center justify-center py-6">
+            <div className="text-lg text-white">
+              Something went wrong in the API.
+            </div>
+          </div>
         )}
         {!loading && !error && !data?.itemCollection?.edges?.length && (
           <div className="border border-black bg-gray-200 min-h-24 w-full flex flex-col space-y-6 items-center justify-center py-6">

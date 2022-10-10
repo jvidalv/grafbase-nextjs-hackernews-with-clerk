@@ -2,8 +2,7 @@ schema
   @auth(
     providers: [{ type: oidc, issuer: "{{ env.CLERK_ISSUER_URL }}" }]
     rules: [
-      { allow: private, operations: ["read"] }
-      { allow: groups, groups: ["admin"] }
+      { allow: private }
     ]
   ) {
   query: Query
@@ -40,5 +39,6 @@ type Comment @model {
 type Vote @model {
   id: ID!
   user: User!
+  item: Item!
   positive: Boolean!
 }

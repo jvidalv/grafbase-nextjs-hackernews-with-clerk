@@ -1,4 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
+import Img from "components/img";
 import { users } from "data/dummy-data";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { UsersListQuery } from "gql/graphql";
@@ -33,7 +34,9 @@ const UsersPage = () => {
       <p className="text-xl mt-4 text-gray-600">
         All the users that have joined Grafnews
       </p>
-      <h3 className="mt-8 text-2xl font-semibold">Total ({users.length})</h3>
+      <h3 className="mt-8 text-2xl font-semibold">
+        Total ({data?.userCollection?.edges?.length || 0})
+      </h3>
       <div className="space-y-4 mt-6">
         {(loading || !!error) && (
           <>
@@ -62,25 +65,20 @@ const UsersPage = () => {
           const { id, name, imageUrl, createdAt } = edge.node;
 
           return (
-            <Link
-              href={{
-                pathname: "/user/[id]",
-                query: { id },
-              }}
+            <div
               key={id}
+              className="border border-b-4 border-gray-300 flex items-center justify-between pr-4"
             >
-              <a className="border border-b-4 border-gray-300 flex items-center justify-between pr-4">
-                <div className="flex items-center space-x-4">
-                  <img src={imageUrl} className="h-12 w-12" alt={name} />
-                  <span className="text-xl">{name}</span>
-                </div>
-                <div>
-                  <time className="text-gray-600">
-                    Joined {formatDistanceToNow(createdAt, { addSuffix: true })}
-                  </time>
-                </div>
-              </a>
-            </Link>
+              <div className="flex items-center space-x-4">
+                <Img src={imageUrl} className="h-12 w-12" alt={name} />
+                <span className="text-xl">{name}</span>
+              </div>
+              <div>
+                <time className="text-gray-600">
+                  Joined {formatDistanceToNow(createdAt, { addSuffix: true })}
+                </time>
+              </div>
+            </div>
           );
         })}
       </div>

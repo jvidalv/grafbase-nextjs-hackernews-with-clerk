@@ -1,3 +1,5 @@
+import Img from "./img";
+import ItemVotes from "components/item-votes";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { ItemsListQuery } from "gql/graphql";
 import Link from "next/link";
@@ -13,40 +15,13 @@ const ItemList = (
     <div className="border w-full border-b-4 border-gray-500">
       <div className="flex">
         <div className="flex flex-col border-r border-black">
-          <button className="flex flex-1 items-center justify-center p-2 hover:bg-indigo-800 hover:text-white">
-            <svg
-              viewBox="0 0 24 24"
-              className="w-6 h-6"
-              stroke="currentColor"
-              strokeWidth="2"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="m18 15-6-6-6 6"></path>
-            </svg>
-          </button>
-          <div className="flex flex-1 items-center justify-center p-2 bg-black text-white font-bold text-lg border-y border-black">
-            {votes?.edges?.length || 0}
-          </div>
-          <button className="flex flex-1 items-center justify-center p-2 hover:bg-indigo-800 hover:text-white">
-            <svg
-              viewBox="0 0 24 24"
-              className="w-6 h-6"
-              stroke="currentColor"
-              strokeWidth="2"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="m6 9 6 6 6-6"></path>
-            </svg>
-          </button>
+          <ItemVotes itemId={id} votes={votes} />
         </div>
         <div className="flex flex-col space-y-4 pt-4 w-full">
           <a
             href={url}
             target="_blank"
+            rel="noreferrer"
             className="text-2xl font-semibold hover:text-indigo-700"
           >
             <div className="px-4">
@@ -78,7 +53,7 @@ const ItemList = (
                 </time>{" "}
                 by {author.name}
               </span>
-              <img
+              <Img
                 src={author.imageUrl}
                 alt={author.name}
                 className="h-7 w-7"

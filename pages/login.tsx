@@ -1,19 +1,26 @@
-import { useSignUp } from "@clerk/nextjs";
+import { useSignIn, useSignUp } from "@clerk/nextjs";
 import { withServerSideAuth } from "@clerk/nextjs/ssr";
+import { AuthenticateWithRedirectParams } from "@clerk/types/dist/oauth";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
 
 const LoginPage = () => {
-  const { query } = useRouter();
   const { signUp } = useSignUp();
+  const { signIn } = useSignIn();
 
+  // We have no way to tell if an user already exists at this point, so we "rely" on localStorage
   const onGithubClick = () => {
-    return signUp?.authenticateWithRedirect({
+    const hasLoggedIn = localStorage.getItem("hasLoggedIn");
+    const params: AuthenticateWithRedirectParams = {
       strategy: "oauth_github",
-      redirectUrl: `/callback?origin=${query?.origin}`,
-      redirectUrlComplete: `/callback?origin=${query?.origin}`,
-    });
+      redirectUrl: `/callback`,
+      redirectUrlComplete: `/callback-login`,
+    };
+    if (hasLoggedIn) {
+      signIn?.authenticateWithRedirect(params);
+    } else {
+      signUp?.authenticateWithRedirect(params);
+    }
   };
 
   return (
