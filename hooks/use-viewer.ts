@@ -18,6 +18,13 @@ const VIEWER_QUERY = gql`
               node {
                 id
                 title
+                url
+                createdAt
+                author {
+                  id
+                  name
+                  imageUrl
+                }
                 comments(first: 100) {
                   edges {
                     __typename
@@ -34,13 +41,6 @@ const VIEWER_QUERY = gql`
                     }
                   }
                 }
-                author {
-                  id
-                  name
-                  imageUrl
-                }
-                url
-                createdAt
               }
             }
           }
