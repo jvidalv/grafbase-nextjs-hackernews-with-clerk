@@ -59,31 +59,35 @@ const CallbackLoginPage = () => {
     }
 
     if (isSignedIn) {
-      const email = session?.user?.emailAddresses[0]?.emailAddress;
-      // Update
-      if (viewer) {
-        mutateUserUpdate({
-          variables: {
-            id: viewer.id,
-            imageUrl: session?.user?.profileImageUrl,
-          },
-        });
-      } else {
-        mutateUserCreate({
-          variables: {
-            name: session?.user?.username,
-            email: email,
-            imageUrl: session?.user?.profileImageUrl,
-            createdAt: Date.now(),
-          },
-        });
-      }
+      (async () => {
+        const email = session?.user?.emailAddresses[0]?.emailAddress;
+        // Update
+        if (viewer) {
+          mutateUserUpdate({
+            variables: {
+              id: viewer.id,
+              imageUrl: session?.user?.profileImageUrl,
+            },
+          });
+        } else {
+          mutateUserCreate({
+            variables: {
+              name: session?.user?.username,
+              email: email,
+              imageUrl: session?.user?.profileImageUrl,
+              createdAt: Date.now(),
+            },
+          });
+        }
 
-      client.refetchQueries({
-        include: ["Viewer"],
-      });
+        client.refetchQueries({
+          include: ["Viewer"],
+        });
 
-      localStorage.setItem("hasLoggedIn", "true");
+        localStorage.setItem("hasLoggedIn", "true");
+
+        replace("/");
+      })();
     }
   }, [
     client,
@@ -96,13 +100,6 @@ const CallbackLoginPage = () => {
     session?.user?.username,
     viewer,
   ]);
-
-  useEffect(() => {
-    if (isSignedIn && isReady && viewer) {
-      const url = query?.origin ? (query?.origin as string) : "/";
-      replace(url);
-    }
-  }, [isReady, isSignedIn, query?.origin, replace, viewer]);
 
   return (
     <>
