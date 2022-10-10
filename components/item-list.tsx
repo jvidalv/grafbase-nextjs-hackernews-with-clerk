@@ -49,9 +49,10 @@ const ItemList = (
               <div className="h-7 w-7"></div>
               <span className="text-gray-700">
                 <time className="font-semibold text-gray-800">
-                  {formatDistanceToNow(Date.parse(createdAt), {
-                    addSuffix: true,
-                  })}
+                  {!!createdAt &&
+                    formatDistanceToNow(Date.parse(createdAt), {
+                      addSuffix: true,
+                    })}
                 </time>{" "}
                 by {author.name}
               </span>

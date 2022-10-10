@@ -113,9 +113,10 @@ const ItemIdPage = () => {
             )}
             <span className="text-gray-500">
               <time className="font-semibold text-gray-700">
-                {formatDistanceToNow(Date.parse(createdAt), {
-                  addSuffix: true,
-                })}
+                {!!createdAt &&
+                  formatDistanceToNow(Date.parse(createdAt), {
+                    addSuffix: true,
+                  })}
               </time>{" "}
               by {author.name}
             </span>

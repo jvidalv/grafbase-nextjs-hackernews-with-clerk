@@ -76,9 +76,10 @@ const UsersPage = () => {
               <div>
                 <time className="text-gray-600">
                   Joined{" "}
-                  {formatDistanceToNow(Date.parse(createdAt), {
-                    addSuffix: true,
-                  })}
+                  {!!createdAt &&
+                    formatDistanceToNow(Date.parse(createdAt), {
+                      addSuffix: true,
+                    })}
                 </time>
               </div>
             </div>
