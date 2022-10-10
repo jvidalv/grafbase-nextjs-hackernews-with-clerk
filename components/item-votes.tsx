@@ -76,11 +76,7 @@ const ItemVotes = (props: {
           id: userVote.node?.id,
           vote,
         },
-      }).then(() =>
-        client.refetchQueries({
-          include: ["ItemOne", "ItemsList"],
-        })
-      );
+      });
     } else {
       await voteFunction({
         variables: {
@@ -88,12 +84,12 @@ const ItemVotes = (props: {
           authorId: viewer?.id,
           itemId,
         },
-      }).then(() =>
-        client.refetchQueries({
-          include: ["ItemOne", "ItemsList"],
-        })
-      );
+      });
     }
+
+    client.refetchQueries({
+      include: ["ItemOne", "ItemsList"],
+    });
   };
 
   return (
