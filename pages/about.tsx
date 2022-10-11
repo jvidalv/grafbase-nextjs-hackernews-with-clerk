@@ -68,7 +68,7 @@ const AboutPage = () => {
         Grafbase and Clerk.
       </p>
       <h3 className="mt-8 text-2xl font-semibold">Features</h3>
-      <div className="grid grid-cols-3 mt-14 gap-12">
+      <div className="grid grid-cols-2 sm:grid-cols-3 mt-14 gap-12">
         {features.map(({ title, description, link }) => (
           <a
             key={title}
@@ -86,7 +86,7 @@ const AboutPage = () => {
         ))}
       </div>
       <h3 className="mt-12 text-2xl font-semibold">Technology used</h3>
-      <div className="grid grid-cols-3 mt-8 gap-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 mt-8 gap-8">
         {tecnologyUsed.map(({ title, description }) => (
           <div key={title} className="bg-gray-50 justify-center p-4 group">
             <h3 className="text-xl">{title}</h3>

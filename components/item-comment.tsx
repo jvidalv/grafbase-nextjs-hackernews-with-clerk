@@ -45,14 +45,14 @@ const ItemComment = (
 
   return (
     <div className="border w-full">
-      <div className="flex justify-between items-center bg-gray-50 pr-4">
+      <div className="sm:flex justify-between items-center bg-gray-50 pr-4">
         <div className="flex items-center space-x-4">
           <Img src={imageUrl} alt={name} className="h-10 w-10" />
           <span className="text-base">{name}</span>
         </div>
-        <div className="flex items-center space-x-4">
+        <div className="p-2 sm:p-0 flex items-center space-x-4">
           {isSignedInUserComment && (
-            <div className="text-sm border">
+            <div className="text-sm border whitespace-nowrap">
               <button
                 onClick={() => alert("@todo")}
                 className="text-gray-700 hover:bg-gray-200 px-2 border-r"

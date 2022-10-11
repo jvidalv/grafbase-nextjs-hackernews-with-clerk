@@ -73,7 +73,7 @@ const UsersPage = () => {
                 <Img src={imageUrl} className="h-12 w-12" alt={name} />
                 <span className="text-xl">{name}</span>
               </div>
-              <div>
+              <div className="hidden sm:block">
                 <time className="text-gray-600">
                   Joined{" "}
                   {!!createdAt &&

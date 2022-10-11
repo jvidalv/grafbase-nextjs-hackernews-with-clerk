@@ -50,7 +50,7 @@ const Home: NextPage = () => {
         <title>Grafnews | Feed</title>
       </Head>
       <div className="space-y-8">
-        <div className="bg-indigo-600 p-4 border border-b-4 border-indigo-300 flex items-center justify-between space-x-4">
+        <div className="bg-indigo-600 p-4 border border-b-4 border-indigo-300 space-y-4 sm:space-y-0 sm:flex items-center justify-between sm:space-x-4">
           <h2 className="text-white text-2xl ">
             Grafbase is open to everyone, start building your frontend with the
             next-gen GraphQL platform!

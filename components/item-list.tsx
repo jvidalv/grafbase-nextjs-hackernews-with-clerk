@@ -29,7 +29,7 @@ const ItemList = (
               <div className="text-gray-500 mt-1 text-sm">{url}</div>
             </div>
           </a>
-          <div className="flex justify-between items-center bg-gray-200 w-full flex-1 px-4 py-2">
+          <div className="sm:flex justify-between items-center bg-gray-200 w-full flex-1 px-4 py-2">
             <Link
               href={{
                 pathname: "/item/[id]",
@@ -46,7 +46,6 @@ const ItemList = (
               </a>
             </Link>
             <div className="flex space-x-2 items-center">
-              <div className="h-7 w-7"></div>
               <span className="text-gray-700">
                 <time className="font-semibold text-gray-800">
                   {!!createdAt &&
