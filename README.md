@@ -21,6 +21,7 @@ This examples shows how to connect Clerk as your Identity Provider with your Gra
 -[ ] Better typing by using fragments and remove the NonNullable thing.
 -[ ] Uncomment delete (It brokes the app, as it also deletes the linked users).
 -[ ] About page.
+-[ ] Mobile version.
 
 ## Issues
 

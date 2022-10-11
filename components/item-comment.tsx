@@ -53,7 +53,10 @@ const ItemComment = (
         <div className="flex items-center space-x-4">
           {isSignedInUserComment && (
             <div className="text-sm border">
-              <button className="text-gray-700 hover:bg-gray-200 px-2 border-r">
+              <button
+                onClick={() => alert("@todo")}
+                className="text-gray-700 hover:bg-gray-200 px-2 border-r"
+              >
                 Edit
               </button>
               <button
