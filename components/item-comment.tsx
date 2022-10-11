@@ -24,7 +24,6 @@ const ItemComment = (
   const {
     id,
     content,
-    createdAt,
     author: { id: authorId, name, imageUrl },
   } = props;
 
@@ -65,9 +64,10 @@ const ItemComment = (
               </button>
             </div>
           )}
-          <time className="text-gray-600 text-sm">
-            {!!createdAt &&
-              formatDistanceToNow(Date.parse(createdAt), { addSuffix: true })}
+          <time className="text-gray-600 text-xs">
+            Date not working until createdAt is fixed in linked lists
+            {/*{!!createdAt &&*/}
+            {/*  formatDistanceToNow(Date.parse(createdAt), { addSuffix: true })}*/}
           </time>
         </div>
       </div>

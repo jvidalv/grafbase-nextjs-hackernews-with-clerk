@@ -20,7 +20,7 @@ const ITEM_QUERY = gql`
           node {
             id
             content
-            createdAt
+            #            createdAt
             author {
               id
               name
@@ -68,7 +68,7 @@ const ItemIdPage = () => {
   });
   const [deleteMutation] = useMutation(ITEM_DELETE_MUTATION);
 
-  if (loading || error || !data?.item) {
+  if (loading || !data?.item) {
     return null;
   }
 
