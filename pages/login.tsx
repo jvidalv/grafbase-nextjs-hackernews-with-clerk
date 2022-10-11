@@ -72,7 +72,7 @@ export const getServerSideProps: GetServerSideProps = withServerSideAuth(
       return {
         redirect: {
           permanent: true,
-          destination: `/user/${userId}`,
+          destination: `/`,
         },
       };
     }

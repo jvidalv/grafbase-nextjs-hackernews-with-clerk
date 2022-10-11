@@ -1,8 +1,6 @@
 import { gql, useMutation } from "@apollo/client";
-import { withServerSideAuth } from "@clerk/nextjs/ssr";
 import { ItemMutation } from "gql/graphql";
 import useViewer from "hooks/use-viewer";
-import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
@@ -120,24 +118,5 @@ const ItemSubmitPage = () => {
     </div>
   );
 };
-
-export const getServerSideProps: GetServerSideProps = withServerSideAuth(
-  async (context) => {
-    const sessionId = context.req.auth.sessionId;
-
-    if (!sessionId) {
-      return {
-        redirect: {
-          permanent: true,
-          destination: "/login?origin=/item/submit",
-        },
-      };
-    }
-
-    return {
-      props: {},
-    };
-  }
-);
 
 export default ItemSubmitPage;

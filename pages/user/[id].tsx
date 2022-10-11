@@ -1,6 +1,5 @@
 import { useAuth } from "@clerk/nextjs";
 import Img from "components/img";
-import ItemList from "components/item-list";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import useViewer from "hooks/use-viewer";
 import Head from "next/head";
@@ -8,6 +7,10 @@ import Head from "next/head";
 const UserIdPage = () => {
   const { signOut } = useAuth();
   const { viewer } = useViewer();
+
+  if (!viewer) {
+    return null;
+  }
 
   return (
     <div>
@@ -36,13 +39,13 @@ const UserIdPage = () => {
             })}
         </time>
       </p>
-      <p className="text-xl mt-4 text-gray-600"></p>
-      <h3 className="mt-8 text-2xl font-semibold">Last 3 items</h3>
-      <div className="space-y-4 mt-6">
-        {viewer?.items?.edges?.map(
-          (edge) => !!edge && <ItemList key={edge.node.id} {...edge.node} />
-        )}
-      </div>
+      {/*<p className="text-xl mt-4 text-gray-600"></p>*/}
+      {/*<h3 className="mt-8 text-2xl font-semibold">Last 3 items</h3>*/}
+      {/*<div className="space-y-4 mt-6">*/}
+      {/*  {viewer?.items?.edges?.map(*/}
+      {/*    (edge) => !!edge && <ItemList key={edge.node.id} {...edge.node} />*/}
+      {/*  )}*/}
+      {/*</div>*/}
     </div>
   );
 };

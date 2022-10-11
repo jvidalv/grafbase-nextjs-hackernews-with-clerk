@@ -15,33 +15,7 @@ const VIEWER_QUERY = gql`
           createdAt
           items(first: 3) {
             edges {
-              node {
-                id
-                title
-                url
-                createdAt
-                author {
-                  id
-                  name
-                  imageUrl
-                }
-                comments(first: 100) {
-                  edges {
-                    __typename
-                  }
-                }
-                votes(first: 100) {
-                  edges {
-                    node {
-                      id
-                      positive
-                      user {
-                        id
-                      }
-                    }
-                  }
-                }
-              }
+              __typename
             }
           }
         }

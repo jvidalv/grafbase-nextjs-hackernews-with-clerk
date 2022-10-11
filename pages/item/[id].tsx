@@ -77,8 +77,6 @@ const ItemIdPage = () => {
   const isSessionUserItem = author.id === viewer?.id;
 
   const onDelete = () => {
-    return alert("Not working yet");
-
     if (confirm("Are you sure you want to delete this item?")) {
       deleteMutation({ variables: { id } }).then(() => replace("/"));
     }

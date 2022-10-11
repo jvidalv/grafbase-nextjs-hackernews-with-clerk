@@ -1,14 +1,8 @@
-import { ApolloError, gql, useApolloClient, useMutation } from "@apollo/client";
-import {
-  AuthenticateWithRedirectCallback,
-  useAuth,
-  useSession,
-} from "@clerk/nextjs";
-import { withServerSideAuth } from "@clerk/nextjs/ssr";
+import { gql, useApolloClient, useMutation } from "@apollo/client";
+import { useAuth, useSession } from "@clerk/nextjs";
 import LogoAnimated from "components/logo-animated";
 import { UserCreateLoginMutation, UserUpdateLoginMutation } from "gql/graphql";
 import useViewer from "hooks/use-viewer";
-import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
