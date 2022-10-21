@@ -1,4 +1,4 @@
-import Img from "./img";
+import Img from "components/img";
 import ItemVotes from "components/item-votes";
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { ItemsListQuery } from "gql/graphql";
