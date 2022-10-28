@@ -17,7 +17,7 @@ type User @model {
   comments: [Comment]
 }
 
-type Item @model @live {
+type Item @model {
   id: ID!
   author: User!
   title: String!
