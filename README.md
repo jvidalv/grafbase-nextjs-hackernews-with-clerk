@@ -16,3 +16,5 @@ To understand how to connect Clerk as your Identity Provider with your Grafbase 
 8. Run `npm run backend`, or `yarn backend` to start local dev server with your schema and the Codegen watch that auto generates ts types based on your schema changes.
 9. Run `npm run dev`, or `yarn dev` (in a new terminal)
 10. Visit [http://localhost:3000](http://localhost:3000)
+
+
