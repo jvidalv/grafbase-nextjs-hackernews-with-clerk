@@ -38,5 +38,4 @@ type Vote @model {
   user: User!
   item: Item!
   positive: Boolean!
-  test: Boolean
 }
