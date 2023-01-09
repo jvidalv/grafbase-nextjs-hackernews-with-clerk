@@ -3,32 +3,32 @@ import {
   ApolloProvider,
   InMemoryCache,
   from,
-  HttpLink
-} from '@apollo/client'
-import { setContext } from '@apollo/client/link/context'
-import { relayStylePagination } from '@apollo/client/utilities'
-import { useAuth } from '@clerk/nextjs'
-import type { PropsWithChildren } from 'react'
-import { useMemo } from 'react'
+  HttpLink,
+} from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import { relayStylePagination } from "@apollo/client/utilities";
+import { useAuth } from "@clerk/nextjs";
+import type { PropsWithChildren } from "react";
+import { useMemo } from "react";
 
 const httpLink = new HttpLink({
-  uri: process.env.NEXT_PUBLIC_GRAFBASE_API_URL
-})
+  uri: process.env.NEXT_PUBLIC_GRAFBASE_API_URL,
+});
 
 const ApolloProviderWrapper = ({ children }: PropsWithChildren) => {
-  const { getToken } = useAuth()
+  const { getToken } = useAuth();
 
   const client = useMemo(() => {
     const authMiddleware = setContext(async (operation, { headers }) => {
-      const token = await getToken({ template: 'grafbase' })
+      const token = await getToken({ template: "grafbase" });
 
       return {
         headers: {
           ...headers,
-          authorization: `Bearer ${token}`
-        }
-      }
-    })
+          authorization: `Bearer ${token}`,
+        },
+      };
+    });
 
     return new ApolloClient({
       link: from([authMiddleware, httpLink]),
@@ -36,21 +36,21 @@ const ApolloProviderWrapper = ({ children }: PropsWithChildren) => {
         typePolicies: {
           Item: {
             fields: {
-              comments: relayStylePagination()
-            }
+              comments: relayStylePagination(),
+            },
           },
           Query: {
             fields: {
               itemCollection: relayStylePagination(),
-              userCollection: relayStylePagination()
-            }
-          }
-        }
-      })
-    })
-  }, [getToken])
+              userCollection: relayStylePagination(),
+            },
+          },
+        },
+      }),
+    });
+  }, [getToken]);
 
-  return <ApolloProvider client={client}>{children}</ApolloProvider>
-}
+  return <ApolloProvider client={client}>{children}</ApolloProvider>;
+};
 
-export default ApolloProviderWrapper
+export default ApolloProviderWrapper;

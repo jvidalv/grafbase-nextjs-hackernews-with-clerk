@@ -1,10 +1,10 @@
-import { gql, useQuery } from '@apollo/client'
-import Head from 'components/head'
-import ItemList from 'components/item-list'
-import { ItemsListQuery } from 'gql/graphql'
-import Link from 'next/link'
-import { useAuth } from '@clerk/nextjs'
-import { graphQlRequestClient } from 'lib/request'
+import { gql, useQuery } from "@apollo/client";
+import Head from "components/head";
+import ItemList from "components/item-list";
+import { ItemsListQuery } from "gql/graphql";
+import Link from "next/link";
+import { useAuth } from "@clerk/nextjs";
+import { graphQlRequestClient } from "lib/request";
 
 const ITEMS_LIST_QUERY = gql`
   query ItemsList($after: String) {
@@ -19,7 +19,9 @@ const ITEMS_LIST_QUERY = gql`
           title
           comments(first: 100) {
             edges {
-              __typename
+              node {
+                __typename
+              }
             }
           }
           votes(first: 100) {
@@ -44,21 +46,22 @@ const ITEMS_LIST_QUERY = gql`
       }
     }
   }
-`
+`;
 
 const Home = (props: { data: ItemsListQuery }) => {
-  const { isSignedIn } = useAuth()
+  const { isSignedIn } = useAuth();
+  console.dir(props.data);
   const {
     data: clientData,
     loading,
     error,
-    fetchMore
+    fetchMore,
   } = useQuery<ItemsListQuery>(ITEMS_LIST_QUERY, {
     skip: !isSignedIn,
-    notifyOnNetworkStatusChange: true
-  })
+    notifyOnNetworkStatusChange: true,
+  });
 
-  const data = clientData ?? props.data
+  const data = clientData ?? props.data;
 
   return (
     <>
@@ -115,13 +118,13 @@ const Home = (props: { data: ItemsListQuery }) => {
               onClick={() =>
                 fetchMore({
                   variables: {
-                    after: data?.itemCollection?.pageInfo?.endCursor
-                  }
+                    after: data?.itemCollection?.pageInfo?.endCursor,
+                  },
                 })
               }
               className="border border-gray-300 text-lg w-fu px-2 py-1 font-semibold text-gray-700 hover:bg-gray-50"
             >
-              Load More {loading ? '...' : ''}
+              Load More {loading ? "..." : ""}
             </button>
           </div>
         )}
@@ -137,18 +140,18 @@ const Home = (props: { data: ItemsListQuery }) => {
         )}
       </div>
     </>
-  )
-}
+  );
+};
 
 export const getStaticProps = async () => {
-  const data = await graphQlRequestClient.request(ITEMS_LIST_QUERY)
-
+  const data = await graphQlRequestClient.request(ITEMS_LIST_QUERY);
+  console.log(data?.itemCollection);
   return {
     props: {
-      data: data ?? null
+      data: data ?? null,
     },
-    revalidate: 3
-  }
-}
+    revalidate: 3,
+  };
+};
 
-export default Home
+export default Home;
